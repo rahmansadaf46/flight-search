@@ -1,17 +1,11 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Typography
-} from '@mui/material';
 import React from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Divider } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Flight } from '../types/flight';
 
 interface FlightAccordionProps {
   flight: Flight;
-  isReturn?: boolean; // Flag to style return flight differently
+  isReturn?: boolean;
 }
 
 const FlightAccordion: React.FC<FlightAccordionProps> = ({ flight, isReturn = false }) => {
@@ -19,31 +13,40 @@ const FlightAccordion: React.FC<FlightAccordionProps> = ({ flight, isReturn = fa
     <Accordion defaultExpanded={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">
-          {isReturn ? 'Return Flight' : 'Outbound Flight'} - {flight.airline} ({flight.flightNumber})
+          {isReturn ? 'Return Flight' : 'Depart'}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Box>
-          <Typography>
-            <strong>Departure:</strong> {flight.departure} at{' '}
-            {new Date(flight.departureTime).toLocaleString()}
-          </Typography>
-          <Typography>
-            <strong>Arrival:</strong> {flight.arrival} at{' '}
-            {new Date(flight.arrivalTime).toLocaleString()}
-          </Typography>
-          <Typography>
-            <strong>Duration:</strong> {flight.duration}
-          </Typography>
-          <Typography>
-            <strong>Price:</strong> ${flight.price}
-          </Typography>
-          <Typography>
-            <strong>Stops:</strong> {flight.stops === 0 ? 'Non-stop' : `${flight.stops} stop(s)`}
-          </Typography>
-          <Typography>
-            <strong>Class:</strong> {flight.classType}
-          </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box>
+            <Typography>{flight.departure}</Typography>
+            <Typography>
+              {new Date(flight.departureTime).toLocaleDateString('en-US', {
+                weekday: 'short',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })}{' '}
+              {flight.departureTime.split('T')[1].slice(0, 5)}
+            </Typography>
+          </Box>
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography>{flight.duration}</Typography>
+            <Divider sx={{ my: 1 }} />
+            <Typography>{flight.stops === 0 ? 'Non Stop' : `${flight.stops} Stop`}</Typography>
+          </Box>
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography>{flight.arrival}</Typography>
+            <Typography>
+              {new Date(flight.arrivalTime).toLocaleDateString('en-US', {
+                weekday: 'short',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              })}{' '}
+              {flight.arrivalTime.split('T')[1].slice(0, 5)}
+            </Typography>
+          </Box>
         </Box>
       </AccordionDetails>
     </Accordion>

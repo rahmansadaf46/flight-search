@@ -1,3 +1,4 @@
+// RawFlight represents the structure of the flight data from the JSON
 export interface FlightSegment {
   marketingcareer: string;
   marketingcareerName: string;
@@ -17,7 +18,7 @@ export interface FlightSegment {
   seat: string;
 }
 
-export interface Flight {
+export interface RawFlight {
   system: string;
   segment: string;
   uId: string;
@@ -74,10 +75,33 @@ export interface Flight {
   ischeap: boolean;
 }
 
+// Flight represents the simplified structure expected by FlightAccordion and FlightDetailsPage
+export interface Flight {
+  id: string; // uId from RawFlight
+  airline: string; // careerName from RawFlight
+  flightNumber: string; // marketingflight from segments
+  departure: string; // departureAirport from segments
+  departureTime: string; // departureTime from segments
+  arrival: string; // arrivalAirport from segments
+  arrivalTime: string; // arrivalTime from segments
+  duration: string; // flightduration from segments
+  price: number; // customerPrice from RawFlight
+  stops: number; // derived from transit
+  classType: string; // class from RawFlight
+  returnFlight?: Flight; // For round-trip flights, populated from segments.back
+}
+
 export interface SearchParams {
-  from: string;
-  to: string;
-  departureDate: string;
-  tripType: 'oneway' | 'roundtrip'| "multicity";
+  from?: string;
+  to?: string;
+  departureDate?: string;
   returnDate?: string;
+  tripType: 'roundtrip' | 'oneway' | 'multicity';
+  legs?: Array<{
+    from: string;
+    to: string;
+    departureDate: string;
+    tripType: string;
+    legNumber: number;
+  }>;
 }
