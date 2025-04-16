@@ -1,5 +1,5 @@
+import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
 
 interface BannerProps {
   image: string;
@@ -37,7 +37,7 @@ const Banner: React.FC<BannerProps> = ({ image, title, subtitle, ctaText, ctaLin
           <Button
             variant="contained"
             href={ctaLink}
-            sx={{ mt: 1, bgcolor: '#4CAF50', '&:hover': { bgcolor: '#45a049' } }}
+            sx={{ mt: 1, bgcolor: '#32D094', '&:hover': { bgcolor: '#45a049' } }}
           >
             {ctaText}
           </Button>

@@ -1,7 +1,7 @@
+import { Box, Button, Container, Divider, Typography } from '@mui/material';
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Container, Typography, Button, Box, Divider } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import FlightAccordion from '../components/FlightAccordion';
 import { RootState } from '../store/store';
 import { Flight, RawFlight } from '../types/flight';
@@ -69,7 +69,7 @@ const FlightDetailsPage: React.FC = () => {
         {flight.returnFlight && (
           <>
             <Divider sx={{ my: 2 }} />
-            <Typography variant="h6" sx={{ mb: 1, color: '#4CAF50' }}>
+            <Typography variant="h6" sx={{ mb: 1, color: '#32D094' }}>
               Return Flight
             </Typography>
             <FlightAccordion flight={flight.returnFlight} isReturn={true} />
@@ -80,7 +80,7 @@ const FlightDetailsPage: React.FC = () => {
           <Typography variant="h6">Fare: ৳ {flight.price}</Typography>
           <Button
             variant="contained"
-            sx={{ mt: 1, bgcolor: '#4CAF50', color: 'white', '&:hover': { bgcolor: '#45a049' } }}
+            sx={{ mt: 1, bgcolor: '#32D094', color: 'white',}}
           >
             Book & Hold
           </Button>

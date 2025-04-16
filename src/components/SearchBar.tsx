@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import flightsData from '../data/flights.json';
 import { setFlights, setLoading, setSearchParams } from '../store/slices/flightSlice';
 import { SearchParams } from '../types/flight';
+import { useNavigate } from 'react-router-dom';
 
 // Sample airport data for autocomplete
 const airports = [
@@ -39,6 +40,7 @@ const airports = [
 
 const SearchBar: React.FC = () => {
   const [tab, setTab] = useState<'roundway' | 'oneway' | 'multicity'>('roundway');
+  const navigate = useNavigate();
   const [tripLegs, setTripLegs] = useState([
     {
       from: airports[0],
@@ -92,19 +94,7 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
-    if (tab === 'multicity') {
-      const searchParams: SearchParams = {
-        tripType: 'multicity',
-        legs: tripLegs.map((leg, index) => ({
-          from: leg.from.code,
-          to: leg.to.code,
-          departureDate: leg.departureDate.format('YYYY-MM-DD'),
-          tripType: 'multicity',
-          legNumber: index + 1,
-        })),
-      };
-      dispatch(setSearchParams(searchParams));
-    } else {
+    if (tab !== 'multicity')  {
       const searchParams: SearchParams = {
         from: tripLegs[0].from.code,
         to: tripLegs[0].to.code,
@@ -113,12 +103,14 @@ const SearchBar: React.FC = () => {
         ...(tab === 'roundway' && { returnDate: returnDate.format('YYYY-MM-DD') }),
       };
       dispatch(setSearchParams(searchParams));
-    }
-    dispatch(setLoading());
+      dispatch(setLoading());
 
-    setTimeout(() => {
-      dispatch(setFlights(flightsData.map((flight) => ({ ...flight, ischeap: flight.ischeap ?? false }))));
-    }, 500);
+      setTimeout(() => {
+        dispatch(setFlights(flightsData.map((flight) => ({ ...flight, ischeap: flight.ischeap ?? false }))));
+        navigate('/flight-results');
+      }, 500);
+    }
+
   };
 
   return (
