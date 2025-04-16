@@ -59,8 +59,6 @@ const SearchBar: React.FC = () => {
 
   const handleTabChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTab(event.target.value as 'roundway' | 'oneway' | 'multicity');
-    // Reset trip legs to one when switching tabs
-
     setTripLegs([
       {
         from: airports[0],
@@ -94,7 +92,7 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
-    if (tab !== 'multicity')  {
+    if (tab !== 'multicity') {
       const searchParams: SearchParams = {
         from: tripLegs[0].from.code,
         to: tripLegs[0].to.code,
@@ -110,15 +108,31 @@ const SearchBar: React.FC = () => {
         navigate('/flight-results');
       }, 500);
     }
-
   };
 
   return (
-    <Box sx={{ p: 3, display: 'flex', borderRadius: 2, minWidth: 1200, width: '100%' }}>
-      <Paper sx={{ p: 3, borderRadius: 2, width: '100%' }}>
+    <Box
+      sx={{
+        p: { xs: 1, sm: 2, md: 3 },
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        borderRadius: 2,
+        width: '100%',
+        maxWidth: 1200,
+        mx: 'auto',
+      }}
+    >
+      <Paper
+        sx={{
+          p: { xs: 1, sm: 2, md: 3 },
+          borderRadius: 2,
+          width: '100%',
+          mb: { xs: 2, md: 0 },
+        }}
+      >
         {/* Round-Way, One-Way, Multi-City Tabs as Radio Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'start', mb: 2 }}>
-          <RadioGroup row value={tab} onChange={handleTabChange}>
+        <Box sx={{ display: 'flex', justifyContent: 'start', mb: 2, flexWrap: 'wrap' }}>
+          <RadioGroup row value={tab} onChange={handleTabChange} sx={{ flexWrap: 'wrap', gap: 1 }}>
             <FormControlLabel
               value="roundway"
               control={<Radio />}
@@ -131,6 +145,7 @@ const SearchBar: React.FC = () => {
                 '& .MuiFormControlLabel-label': {
                   color: tab === 'roundway' ? '#32D094' : 'text.secondary',
                 },
+                m: 0,
               }}
             />
             <FormControlLabel
@@ -145,6 +160,7 @@ const SearchBar: React.FC = () => {
                 '& .MuiFormControlLabel-label': {
                   color: tab === 'oneway' ? '#32D094' : 'text.secondary',
                 },
+                m: 0,
               }}
             />
             <FormControlLabel
@@ -159,22 +175,33 @@ const SearchBar: React.FC = () => {
                 '& .MuiFormControlLabel-label': {
                   color: tab === 'multicity' ? '#32D094' : 'text.secondary',
                 },
+                m: 0,
               }}
             />
           </RadioGroup>
         </Box>
 
         {/* Search Form */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' , gap: { xs: 1, sm: 2 } }}>
           {tripLegs.map((leg, index) => (
-            <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'center', position: 'relative' }}>
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                gap: { xs: 1, sm: 2 },
+                alignItems: 'center',
+                position: 'relative',
+                width: '100%',
+              }}
+            >
               {/* From Card */}
               <Paper
                 elevation={0}
                 sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  p: 2,
+                  flex: { xs: '100%', sm: 1 },
+                  minWidth: { xs: '100%', sm: 200 },
+                  p: { xs: 1, sm: 2 },
                   borderRadius: 1,
                 }}
               >
@@ -220,45 +247,57 @@ const SearchBar: React.FC = () => {
                       </Box>
                     </li>
                   )}
-                  sx={{ '& .MuiAutocomplete-inputRoot': { paddingLeft: '0 !important' }, mb: tab === 'multicity' ? 11 : 0 }}
+                  sx={{ '& .MuiAutocomplete-inputRoot': { paddingLeft: '0 !important' }, mb: tab === 'multicity' ? 2 : 0 }}
                 />
-                {(tab === 'roundway' || tab === 'oneway') && (<Box sx={{ mt: 1 }}>
-                  <DatePicker
-                    label=""
-                    value={leg.departureDate}
-                    onChange={(newValue) =>
-                      handleLegChange(index, 'departureDate', newValue || dayjs('2025-04-17'))
-                    }
-                    slots={{
-                      openPickerIcon: () => <EventIcon sx={{ color: '#32D094' }} />,
-                    }}
-                    slotProps={{
-                      textField: {
-                        variant: 'filled',
-                        sx: {
-                          '& .MuiFilledInput-root': {
-                            backgroundColor: '#E8F0FE',
-                            borderRadius: 1,
-                            '&:before, &:after': { borderBottom: 'none' },
-                            '&:hover:before': { borderBottom: 'none' },
+                {(tab === 'roundway' || tab === 'oneway') && (
+                  <Box sx={{ mt: 1 }}>
+                    <DatePicker
+                      label=""
+                      value={leg.departureDate}
+                      onChange={(newValue) =>
+                        handleLegChange(index, 'departureDate', newValue || dayjs('2025-04-17'))
+                      }
+                      slots={{
+                        openPickerIcon: () => <EventIcon sx={{ color: '#32D094' }} />,
+                      }}
+                      slotProps={{
+                        textField: {
+                          variant: 'filled',
+                          sx: {
+                            '& .MuiFilledInput-root': {
+                              backgroundColor: '#E8F0FE',
+                              borderRadius: 1,
+                              '&:before, &:after': { borderBottom: 'none' },
+                              '&:hover:before': { borderBottom: 'none' },
+                            },
+                            '& .MuiInputBase-input': { padding: '8px 12px', fontSize: '0.9rem' },
+                            width: '100%',
                           },
-                          '& .MuiInputBase-input': { padding: '8px 12px', fontSize: '0.9rem' },
-                          width: '100%',
                         },
-                      },
-                    }}
-                    format="DD MMM YY"
-                  />
-                </Box>)}
-
+                      }}
+                      format="DD MMM YY"
+                    />
+                  </Box>
+                )}
               </Paper>
 
               {/* Plane Icons */}
-              <Box sx={{ display: 'flex', alignItems: 'center', mx: 2, flexDirection: 'column', gap: 1 }}>
-                <FlightIcon sx={{ fontSize: 60, mb: tab === 'multicity' ? 14 : tab === 'roundway' ? -4 : 10, color: '#32D094', transform: 'rotate(90deg)' }} />
+              <Box sx={{ display: 'flex', alignItems: 'center', mx: 1, flexDirection: 'column', gap: 1 }}>
+                <FlightIcon
+                  sx={{
+                    fontSize: { xs: 40, sm: 60 },
+                    mb: { xs: 1, sm: tab === 'multicity' ? 14 : tab === 'roundway' ? -4 : 10 },
+                    color: '#32D094',
+                    transform: 'rotate(90deg)',
+                  }}
+                />
                 {tab === 'roundway' && index === 0 && (
                   <FlightOutlinedIcon
-                    sx={{ fontSize: 60, color: '#32D094', transform: 'rotate(270deg)' }}
+                    sx={{
+                      fontSize: { xs: 40, sm: 60 },
+                      color: '#32D094',
+                      transform: 'rotate(270deg)',
+                    }}
                   />
                 )}
               </Box>
@@ -267,9 +306,9 @@ const SearchBar: React.FC = () => {
               <Paper
                 elevation={0}
                 sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  p: 2,
+                  flex: { xs: '100%', sm: 1 },
+                  minWidth: { xs: '100%', sm: 200 },
+                  p: { xs: 1, sm: 2 },
                   borderRadius: 1,
                 }}
               >
@@ -348,7 +387,7 @@ const SearchBar: React.FC = () => {
                   </Box>
                 )}
                 {tab !== 'roundway' && (
-                  <Box sx={{ mt: 1, visibility: 'hidden' }}>
+                  <Box sx={{ mt: 1, visibility: { xs: 'hidden', sm: 'visible' } }}>
                     <DatePicker
                       label=""
                       value={returnDate}
@@ -394,10 +433,17 @@ const SearchBar: React.FC = () => {
       </Paper>
 
       {/* Passenger and Class Selection */}
-      <Paper sx={{ p: 3, borderRadius: 2, maxWidth: 400, width: '100%', height: 'auto' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 200, height: '100%', justifyContent: 'space-between' }}>
+      <Paper
+        sx={{
+          p: { md: 3 },
+          borderRadius: 2,
+          maxWidth: { md: '100%', lg: 400 },
+          width: '100%',
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'column' }, gap: { xs: 1, sm: 2 }, minWidth: 200, height: '100%', justifyContent: 'space-between' }}>
           {/* Passenger and Class Selection */}
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 1 }, width: '100%' }}>
             <FormControl sx={{ width: '100%' }}>
               <Select
                 value={formData.adults}
@@ -487,7 +533,7 @@ const SearchBar: React.FC = () => {
           </Box>
 
           {/* Search Button */}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: { xs: 2, sm: 0 } }}>
             <Button
               variant="contained"
               onClick={handleSearch}
@@ -499,6 +545,7 @@ const SearchBar: React.FC = () => {
                 px: 4,
                 textTransform: 'uppercase',
                 fontWeight: 'bold',
+                width: '100%',
               }}
             >
               Search For Flight
@@ -516,6 +563,7 @@ const SearchBar: React.FC = () => {
                     px: 4,
                     textTransform: 'uppercase',
                     fontWeight: 'bold',
+                    width: { xs: '100%', sm: 'auto' },
                   }}
                 >
                   Add City

@@ -98,10 +98,29 @@ const FlightResults: React.FC = () => {
   if (!flights.length) return null;
 
   return (
-    <Box sx={{ display: 'flex', mt: 4, maxWidth: 1200, width: '100%', gap: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        mt: { xs: 2, md: 4 },
+        maxWidth: 1200,
+        width: '100%',
+        mx: 'auto',
+        px: { xs: 1, sm: 2, md: 0 },
+        gap: { xs: 0, md: 2 },
+      }}
+    >
       {/* Filter Sidebar */}
-      <Box sx={{ width: 250, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      <Box
+        sx={{
+          width: { xs: '100%', md: 250 },
+          p: { xs: 1, sm: 2 },
+          bgcolor: '#f5f5f5',
+          borderRadius: 2,
+          mb: { xs: 2, md: 0 },
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 0 } }}>
           <Typography variant="h6">FILTER</Typography>
           <Button
             onClick={() => {
@@ -109,24 +128,25 @@ const FlightResults: React.FC = () => {
               setFareType({ refundable: false, nonRefundable: false });
               setStops({ nonStop: false, oneStop: false });
             }}
+            sx={{ width: { xs: '100%', sm: 'auto' } }}
           >
             RESET
           </Button>
         </Box>
 
         {/* Sort By */}
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: 2, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
           <Button
             variant={sortBy === 'cheapest' ? 'contained' : 'outlined'}
             onClick={() => setSortBy('cheapest')}
-            sx={{ mr: 1, bgcolor: sortBy === 'cheapest' ? '#32D094' : 'white', color: sortBy === 'cheapest' ? 'white' : '#32D094' }}
+            sx={{ mr: 0, bgcolor: sortBy === 'cheapest' ? '#32D094' : 'white', color: sortBy === 'cheapest' ? 'white' : '#32D094', width: '100%' }}
           >
             Cheapest
           </Button>
           <Button
             variant={sortBy === 'fastest' ? 'contained' : 'outlined'}
             onClick={() => setSortBy('fastest')}
-            sx={{ bgcolor: sortBy === 'fastest' ? '#32D094' : 'white', color: sortBy === 'fastest' ? 'white' : '#32D094' }}
+            sx={{ bgcolor: sortBy === 'fastest' ? '#32D094' : 'white', color: sortBy === 'fastest' ? 'white' : '#32D094', width: '100%' }}
           >
             Fastest
           </Button>
@@ -157,18 +177,22 @@ const FlightResults: React.FC = () => {
               <Checkbox
                 checked={fareType.refundable}
                 onChange={(e) => setFareType({ ...fareType, refundable: e.target.checked })}
+                sx={{ padding: { xs: 0.5, sm: 1 } }}
               />
             }
             label="Refundable"
+            sx={{ marginLeft: 0 }}
           />
           <FormControlLabel
             control={
               <Checkbox
                 checked={fareType.nonRefundable}
                 onChange={(e) => setFareType({ ...fareType, nonRefundable: e.target.checked })}
+                sx={{ padding: { xs: 0.5, sm: 1 } }}
               />
             }
             label="Non Refundable"
+            sx={{ marginLeft: 0 }}
           />
         </Box>
 
@@ -180,27 +204,39 @@ const FlightResults: React.FC = () => {
               <Checkbox
                 checked={stops.nonStop}
                 onChange={(e) => setStops({ ...stops, nonStop: e.target.checked })}
+                sx={{ padding: { xs: 0.5, sm: 1 } }}
               />
             }
             label="Non Stop"
+            sx={{ marginLeft: 0 }}
           />
           <FormControlLabel
             control={
               <Checkbox
                 checked={stops.oneStop}
                 onChange={(e) => setStops({ ...stops, oneStop: e.target.checked })}
+                sx={{ padding: { xs: 0.5, sm: 1 } }}
               />
             }
             label="One Stop"
+            sx={{ marginLeft: 0 }}
           />
         </Box>
       </Box>
 
       {/* Flight Results */}
-      <Box sx={{ flex: 1 }}>
+      <Box sx={{ flex: 1, width: '100%' }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="h6">
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: { xs: 'center', sm: 'space-between' },
+            mb: 2,
+            textAlign: { xs: 'center', sm: 'left' },
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: { xs: 1, sm: 0 } }}>
             {searchParams.from} - {searchParams.to} | Total {filteredFlights.length} Flights
             <br />
             {searchParams.departureDate} - {searchParams.returnDate || 'N/A'} | 1 Traveler
@@ -209,7 +245,7 @@ const FlightResults: React.FC = () => {
             <Button
               variant="contained"
               onClick={handleModifySearch}
-              sx={{ bgcolor: '#32D094', color: 'white', ml: 3 }}
+              sx={{ bgcolor: '#32D094', color: 'white', ml: { xs: 0, sm: 3 } }}
             >
               Modify Search
             </Button>
@@ -221,13 +257,25 @@ const FlightResults: React.FC = () => {
           const rawFlight = rawFlights.find((f) => f.uId === flight.id)!;
 
           return (
-            <Accordion key={flight.id} sx={{ mb: 2, borderRadius: 2, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+            <Accordion
+              key={flight.id}
+              sx={{ mb: 2, borderRadius: 2, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+            >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                sx={{ bgcolor: '#f5f5f5', borderRadius: 1 }}
+                sx={{ bgcolor: '#f5f5f5', borderRadius: 1, px: { xs: 1, sm: 2 } }}
               >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    justifyContent: 'space-between',
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    width: '100%',
+                    gap: { xs: 1, sm: 0 },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 1, sm: 0 } }}>
                     <img
                       src="https://via.placeholder.com/40.png?text=BS"
                       alt={flight.airline}
@@ -240,20 +288,20 @@ const FlightResults: React.FC = () => {
                       </Typography>
                     </Box>
                   </Box>
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: 'center', width: { xs: '100%', sm: 'auto' } }}>
                     <Typography variant="h6">{rawFlight.godeparture}</Typography>
                     <Typography>{flight.departureTime.split('T')[1].slice(0, 5)}</Typography>
                   </Box>
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: 'center', width: { xs: '100%', sm: 'auto' } }}>
                     <FlightIcon sx={{ transform: 'rotate(90deg)', color: '#32D094' }} />
                     <Typography>{flight.duration}</Typography>
                     <Typography>{flight.stops === 0 ? 'Non Stop' : 'One Stop'}</Typography>
                   </Box>
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: 'center', width: { xs: '100%', sm: 'auto' } }}>
                     <Typography variant="h6">{rawFlight.goarrival}</Typography>
                     <Typography>{flight.arrivalTime.split('T')[1].slice(0, 5)}</Typography>
                   </Box>
-                  <Box sx={{ textAlign: 'right' }}>
+                  <Box sx={{ textAlign: 'right', width: { xs: '100%', sm: 'auto' } }}>
                     <Typography variant="h6">৳ {flight.price}</Typography>
                     <Typography color="text.secondary" sx={{ textDecoration: 'line-through' }}>
                       ৳ {flight.price + 1000}
@@ -261,7 +309,7 @@ const FlightResults: React.FC = () => {
                   </Box>
                 </Box>
               </AccordionSummary>
-              <AccordionDetails sx={{ p: 2 }}>
+              <AccordionDetails sx={{ p: { xs: 1, sm: 2 } }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   {/* Outbound Segment Details */}
                   <Box>
@@ -292,7 +340,7 @@ const FlightResults: React.FC = () => {
                   )}
 
                   {/* Additional Details */}
-                  <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
                     <Typography>{rawFlight.refundable}</Typography>
                     <Typography>Class: {flight.classType}</Typography>
                     <Typography>
@@ -301,17 +349,17 @@ const FlightResults: React.FC = () => {
                   </Box>
 
                   {/* Buttons */}
-                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1, justifyContent: { xs: 'center', sm: 'flex-end' } }}>
                     <Button
                       variant="text"
                       onClick={() => navigate(`/flight-details/${flight.id}`)}
-                      sx={{ color: '#5C6BC0' }}
+                      sx={{ color: '#5C6BC0', width: { xs: '100%', sm: 'auto' } }}
                     >
                       Flight Details
                     </Button>
                     <Button
                       variant="contained"
-                      sx={{ bgcolor: '#5C6BC0', color: 'white', '&:hover': { bgcolor: '#4a5ba8' } }}
+                      sx={{ bgcolor: '#5C6BC0', color: 'white', '&:hover': { bgcolor: '#4a5ba8' }, width: { xs: '100%', sm: 'auto' } }}
                     >
                       Book Now
                     </Button>
