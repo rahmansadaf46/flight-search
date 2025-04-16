@@ -386,36 +386,6 @@ const SearchBar: React.FC = () => {
                     />
                   </Box>
                 )}
-                {tab !== 'roundway' && (
-                  <Box sx={{ mt: 1, visibility: { xs: 'hidden', sm: 'visible' } }}>
-                    <DatePicker
-                      label=""
-                      value={returnDate}
-                      onChange={(newValue) =>
-                        setReturnDate(newValue || dayjs('2025-04-19'))
-                      }
-                      slots={{
-                        openPickerIcon: () => <EventIcon sx={{ color: '#32D094' }} />,
-                      }}
-                      slotProps={{
-                        textField: {
-                          variant: 'filled',
-                          sx: {
-                            '& .MuiFilledInput-root': {
-                              backgroundColor: '#E8F0FE',
-                              borderRadius: 1,
-                              '&:before, &:after': { borderBottom: 'none' },
-                              '&:hover:before': { borderBottom: 'none' },
-                            },
-                            '& .MuiInputBase-input': { padding: '8px 12px', fontSize: '0.9rem' },
-                            width: '100%',
-                          },
-                        },
-                      }}
-                      format="DD MMM YY"
-                    />
-                  </Box>
-                )}
               </Paper>
 
               {/* Delete Button for Multi-City Legs */}
